@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.southwind.ship.repository.ShipTicket">
+    <select id="findAll" resultType="java.util.HashMap">
+         select Id, Name, Price, Discout, Date, Des from Ship;
+     </select>
+
+    <select id="getUserAllTicket" resultType="java.util.HashMap">
+         select Ship.* from UserTicket left join Ship on shipId = id where UserId = #{userId}
+     </select>
+
+    <insert id="buyTicket">
+     insert into UserTicket(UserId, ShipId) values(#{userId},#{shipId})
+     </insert>
+</mapper>

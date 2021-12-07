@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ConfigClient" />
+        <module name="ConfigServer" />
+        <module name="Consumer" />
+        <module name="EurekaServer" />
+        <module name="Gateway" />
+        <module name="provider" />
+        <module name="Ribbon" />
+        <module name="ZkClient" />
+        <module name="ZkServer" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ConfigClient" options="-parameters" />
+      <module name="ConfigServer" options="-parameters" />
+      <module name="Consumer" options="-parameters" />
+      <module name="EurekaServer" options="-parameters" />
+      <module name="Gateway" options="-parameters" />
+      <module name="Ribbon" options="-parameters" />
+      <module name="ZkClient" options="-parameters" />
+      <module name="ZkServer" options="-parameters" />
+      <module name="provider" options="-parameters" />
+      <module name="springcloud" options="-parameters" />
+    </option>
+  </component>
+</project>

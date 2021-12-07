@@ -1,0 +1,8 @@
+com\southwind\repository\StudentRepository.class
+com\southwind\ProviderApplication.class
+com\southwind\repository\impl\CarRepository.class
+com\southwind\controller\CarHandler.class
+com\southwind\controller\StudentHandler.class
+com\southwind\repository\impl\StudentRepositoryImpl.class
+com\southwind\entity\Student.class
+com\southwind\entity\Car.class

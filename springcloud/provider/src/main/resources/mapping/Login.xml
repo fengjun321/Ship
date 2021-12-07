@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.southwind.ship.repository.Login">
+    <select id="register" parameterMap="pm" statementType="CALLABLE" resultMap="rm">
+         {call register(#{in_name, mode=IN}, #{in_password, mode=IN},#{in_authority, mode=IN})}
+    </select>
+
+    <parameterMap id="pm" type="java.util.Map">
+        <parameter property="in_name" jdbcType="VARCHAR" mode="IN"></parameter>
+        <parameter property="in_password" jdbcType="VARCHAR" mode="IN"></parameter>
+        <parameter property="in_authority" jdbcType="INTEGER" mode="IN"></parameter>
+    </parameterMap>
+
+    <resultMap id="rm" type="HashMap">
+        <!--<id column="UserId" property="userId" />-->
+        <result column="error_code" property="err_code"></result>
+        <result column="UserId" property="userId"></result>
+        <result column="Name" property="name"></result>
+        <result column="Authority" property="authority"></result>
+        <result column="Password" property="password"></result>
+    </resultMap>
+
+    <select id="login" resultType="java.util.HashMap">
+         select UserId, Name, Authority, Password from User where Name = #{username}
+          and Password = #{password}
+     </select>
+</mapper>

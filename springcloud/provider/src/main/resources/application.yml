@@ -1,0 +1,29 @@
+server:
+  port: 8010
+spring:
+  application:
+    name: provider
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://localhost:9090/
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: "123456" #不加引号配密码回报错，yml文件才有的问题000000
+    url: jdbc:mysql://127.0.0.1:3306/test?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CST
+    #url: jdbc:mysql://hadoop102:3306/test?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CST
+mybatis:
+  mapper-locations: classpath:/mapping/*.xml
+  type-aliases-package: com.southwind.ship.entity,com.southwind.entity
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-svc:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
