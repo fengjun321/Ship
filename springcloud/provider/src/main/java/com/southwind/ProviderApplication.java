@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication//(exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-@MapperScan(basePackages = {"com.southwind.mybatis.repository","com.southwind.ship.repository"})
+@MapperScan(basePackages = {"com.southwind.ship.repository"})
 public class ProviderApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext run = SpringApplication.run(ProviderApplication.class, args);

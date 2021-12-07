@@ -19,7 +19,7 @@ spring:
     #url: jdbc:mysql://hadoop102:3306/test?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CST
 mybatis:
   mapper-locations: classpath:/mapping/*.xml
-  type-aliases-package: com.southwind.ship.entity,com.southwind.entity
+  type-aliases-package: com.southwind.ship.entity
 eureka:
   client:
     service-url:

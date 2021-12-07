@@ -1,6 +1,6 @@
 package com.southwind.ship.entity;
 
-import com.southwind.entity.Message;
+import com.southwind.ship.entity.Message;
 import com.southwind.ship.util.Md5;
 import lombok.Data;
 import org.springframework.context.annotation.Scope;

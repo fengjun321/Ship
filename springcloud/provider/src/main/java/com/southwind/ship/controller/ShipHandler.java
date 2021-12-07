@@ -1,13 +1,12 @@
 package com.southwind.ship.controller;
 
-import com.southwind.entity.User;
 import com.southwind.ship.entity.Ticket;
 import com.southwind.ship.entity.TicketManager;
 import com.southwind.ship.entity.UserA;
 import com.southwind.ship.entity.UserManager;
 import com.southwind.ship.repository.Login;
 import com.southwind.ship.repository.ShipRepository;
-import com.southwind.entity.Message;
+import com.southwind.ship.entity.Message;
 import com.southwind.ship.repository.ShipTicket;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
