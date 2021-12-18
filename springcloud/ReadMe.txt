@@ -30,13 +30,39 @@ http://localhost:8010/Ship/checkeffect
 http://localhost:8010/Ship/getshipticket
 {}
 
+http://localhost:8010/Ship/getAllRoom
+{
+    "shipId":1101
+}
+返回:
+{
+    "errcode": 0,
+    "data": {
+        "shipId": 1101,
+        "cashPledge": 100,
+        "priceLev": [
+            20,
+            30,
+            40
+        ],
+        "reserve": [
+            3,
+            4
+        ]
+    }
+}
+
 http://localhost:8010/Ship/buyTicket
 {
         "tookenId" : "9f4b93fec294a015f857955364cc982b",
-        "ticketId" : 1202
+        "ticketId" : 1101，
+        "roomId":1
 }
 
 http://localhost:8010/Ship/getUserAllTicket
 {
         "tookenId": "9f4b93fec294a015f857955364cc982b"
 }
+
+http://localhost:8010/Ship/getRecordCost
+{}
