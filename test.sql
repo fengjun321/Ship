@@ -10,10 +10,50 @@ Target Server Type    : MYSQL
 Target Server Version : 80027
 File Encoding         : 65001
 
-Date: 2021-12-07 22:48:52
+Date: 2021-12-18 18:42:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for RecordCost
+-- ----------------------------
+DROP TABLE IF EXISTS `RecordCost`;
+CREATE TABLE `RecordCost` (
+  `ShipId` int DEFAULT NULL,
+  `ShipName` varchar(255) DEFAULT NULL,
+  `RoomId` int DEFAULT NULL,
+  `UserId` int DEFAULT NULL,
+  `UserName` varchar(255) DEFAULT NULL,
+  `GoodId` int DEFAULT NULL,
+  `GoodName` varchar(255) DEFAULT NULL,
+  `GoodPrice` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of RecordCost
+-- ----------------------------
+INSERT INTO `RecordCost` VALUES ('1101', '泰坦立刻', '-1', '7', 'xiaodan', '1', '风筒', '43');
+INSERT INTO `RecordCost` VALUES ('1101', '泰坦立刻', '-1', '7', 'xiaodan', '2', '牙刷', '34');
+INSERT INTO `RecordCost` VALUES ('1101', '泰坦立刻', '-1', '7', 'xiaodan', '2', '牙刷', '34');
+
+-- ----------------------------
+-- Table structure for RoomManage
+-- ----------------------------
+DROP TABLE IF EXISTS `RoomManage`;
+CREATE TABLE `RoomManage` (
+  `ShipId` int NOT NULL,
+  `RoomRange` int DEFAULT NULL,
+  `Reserve` varchar(255) DEFAULT NULL,
+  `PriceLev` varchar(255) DEFAULT NULL,
+  `CashPledge` int DEFAULT NULL,
+  PRIMARY KEY (`ShipId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of RoomManage
+-- ----------------------------
+INSERT INTO `RoomManage` VALUES ('1101', '30', '3,4,23,24,1,2,25,30,29,28,18,19,7,27', '20,30,40', '100');
 
 -- ----------------------------
 -- Table structure for Ship
@@ -85,16 +125,25 @@ INSERT INTO `User` VALUES ('16', 'shiluodi', '2', 'ttt');
 -- ----------------------------
 DROP TABLE IF EXISTS `UserTicket`;
 CREATE TABLE `UserTicket` (
-  `UserId` int NOT NULL,
+  `UserId` int DEFAULT NULL,
   `ShipId` int DEFAULT NULL,
-  PRIMARY KEY (`UserId`)
+  `RoomId` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of UserTicket
 -- ----------------------------
-INSERT INTO `UserTicket` VALUES ('1', '2');
-INSERT INTO `UserTicket` VALUES ('6', '1202');
+INSERT INTO `UserTicket` VALUES ('1', '2', '8');
+INSERT INTO `UserTicket` VALUES ('6', '1101', '24');
+INSERT INTO `UserTicket` VALUES ('7', '1101', '1');
+INSERT INTO `UserTicket` VALUES ('7', '1101', '25');
+INSERT INTO `UserTicket` VALUES ('7', '1101', '30');
+INSERT INTO `UserTicket` VALUES ('7', '1101', '29');
+INSERT INTO `UserTicket` VALUES ('7', '1101', '28');
+INSERT INTO `UserTicket` VALUES ('6', '1101', '18');
+INSERT INTO `UserTicket` VALUES ('6', '1101', '19');
+INSERT INTO `UserTicket` VALUES ('6', '1101', '7');
+INSERT INTO `UserTicket` VALUES ('6', '1101', '27');
 
 -- ----------------------------
 -- Procedure structure for Register
