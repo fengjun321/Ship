@@ -6,11 +6,19 @@
          select Id, Name, Price, Discout, Date, Des from Ship;
      </select>
 
+    <select id="getAllRoom" resultType="java.util.HashMap">
+         select ShipId, RoomRange, Reserve, PriceLev, CashPledge from RoomManage where ShipId = #{shipId};
+     </select>
+
     <select id="getUserAllTicket" resultType="java.util.HashMap">
          select Ship.* from UserTicket left join Ship on shipId = id where UserId = #{userId}
      </select>
 
     <insert id="buyTicket">
-     insert into UserTicket(UserId, ShipId) values(#{userId},#{shipId})
+     insert into UserTicket(UserId, ShipId, RoomId) values(#{userId},#{shipId},#{roomId})
      </insert>
+
+    <update id="updateRoomManage">
+        update RoomManage set Reserve=#{reserve} where shipId=#{shipId}
+    </update>
 </mapper>

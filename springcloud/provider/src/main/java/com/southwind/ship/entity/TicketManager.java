@@ -10,8 +10,11 @@ import java.util.List;
 @Component
 public class TicketManager {
     private List<Ticket> tiketList;
+    private List<Room> roomList;
+
     public TicketManager() {
         tiketList = new ArrayList<Ticket>();
+        roomList = new ArrayList<>();
     }
 
     public Ticket getTicketInfo(Integer ticketId) {

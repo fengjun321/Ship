@@ -1,13 +1,10 @@
 package com.southwind.ship.controller;
 
-import com.southwind.ship.entity.Ticket;
-import com.southwind.ship.entity.TicketManager;
-import com.southwind.ship.entity.UserA;
-import com.southwind.ship.entity.UserManager;
+import com.southwind.ship.entity.*;
 import com.southwind.ship.repository.Login;
 import com.southwind.ship.repository.ShipRepository;
-import com.southwind.ship.entity.Message;
 import com.southwind.ship.repository.ShipTicket;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +36,14 @@ public class ShipHandler {
         return msg;
     }
 
+    @PostMapping("/getRecordCost")
+    public Message GetRecordCost() {
+        Message msg = new Message();
+        msg.setErrcode(1);
+        msg.setData(shipRepository.GetRecordCost());
+        return msg;
+    }
+
     @PostMapping("/register")
     public Map<String, Object> register(@RequestBody Map<String,Object> reg) {
         Map<String, Object> param = new HashMap<>();
@@ -52,7 +57,7 @@ public class ShipHandler {
     @PostMapping("/login")
     public Message login(@RequestBody Map<String, Object> lo) {
         Map<String, Object> loginInfo = this.login.login((String) lo.get("username"), (String) lo.get("password"));
-
+        System.out.println(lo);
         Message msg = new Message();
         UserA userI = userManager.getUserByName((String) lo.get("username"));
         if (userI != null) {
@@ -114,6 +119,57 @@ public class ShipHandler {
         return msg;
     }
 
+    @PostMapping("/getAllRoom")
+    public Message getAllRoom(@RequestBody Map<String, Object> val) {
+        Integer shipId = (Integer)val.get("shipId");
+        List<Map<String, Object>> roomList = shipTick.getAllRoom(shipId);
+
+        for (Map<String, Object> room : roomList) {
+            List<Room> allRoom = ticketManager.getRoomList();
+            Room curRoom = null;
+            for (Room room2 : allRoom) {
+                if (room2.getShipId().equals((Integer) room.get("ShipId"))) {
+                    curRoom = room2;
+                }
+            }
+            if (curRoom == null) {
+                Room newRoom = new Room();
+                newRoom.setShipId((Integer) room.get("ShipId"));
+                newRoom.setRoomRange((Integer) room.get("RoomRange"));
+                newRoom.setCashPledge((Integer)room.get("CashPledge"));
+                List<Integer> priceLev = newRoom.getPriceLev();
+                String priceLev1 = (String)room.get("PriceLev");
+                String[] priceList = priceLev1.split(",");
+                for (String price: priceList) {
+                    priceLev.add(Integer.parseInt(price));
+                }
+
+                List<Integer> reserve1 = newRoom.getReserve();
+                String reserve = (String)room.get("Reserve");
+                String[] reList = reserve.split(",");
+                for (String re : reList) {
+                    reserve1.add(Integer.parseInt(re));
+                }
+                allRoom.add(newRoom);
+
+                Message msg = new Message();
+                msg.setErrcode(0);
+                msg.setData(newRoom);
+                return msg;
+            } else {
+                Message msg = new Message();
+                msg.setErrcode(0);
+                msg.setData(curRoom);
+                return msg;
+            }
+        }
+
+        Message msg = new Message();
+        msg.setErrcode(-1);
+        msg.setData(null);
+        return msg;
+    }
+
     @PostMapping("/getUserAllTicket")
     public Message getUserAllTicket(@RequestBody Map<String, Object> val) {
         String tookenId = (String)val.get("tookenId");
@@ -136,10 +192,46 @@ public class ShipHandler {
         return msg;
     }
 
+    //房间消耗物品登记
+    @PostMapping("/recordCost")
+    public Message roomCostRecord(@RequestBody Map<String, Object> val) {
+        String tookenId = (String)val.get("tookenId");
+        Integer ticketId = (Integer)val.get("ticketId");
+        Integer goodId = (Integer)val.get("goodId");
+        Message msg = userManager.checkUserEffective(tookenId);
+        if (msg.getErrcode() < 0) return msg;
+
+        String goodName = "";
+        Integer goodPrice = 0;
+        UserA user = userManager.getUserInfo(tookenId);
+        int size = GoodInRoom.goodNameList.size();
+        for (int i = 0; i < size; i++) {
+            if (goodId.equals(i)) {
+                goodName = GoodInRoom.goodNameList.get(i);
+                goodPrice = GoodInRoom.goodPrice.get(i);
+            }
+        }
+        if (goodName.isEmpty()) {
+            goodName = GoodInRoom.goodNameList.get(size-1);
+            goodPrice = GoodInRoom.goodPrice.get(size-1);
+        }
+
+        Ticket ticketInfo = ticketManager.getTicketInfo(ticketId);
+        String shipName = ticketInfo.getName();
+        Integer roomId = user.GetUserRoomByTicketId(ticketId);
+        shipRepository.RecordCost(ticketId, shipName, roomId, user.getUserId(),
+                user.getName(), goodId, goodName, goodPrice);
+
+        msg.setErrcode(0);
+        msg.setData(null);
+        return msg;
+    }
+
     @PostMapping("/buyTicket")
     public Message buyTicket(@RequestBody Map<String, Object> val) {
         String tookenId = (String)val.get("tookenId");
         Integer ticketId = (Integer)val.get("ticketId");
+        Integer roomId = (Integer)val.get("roomId");
         Message msg = userManager.checkUserEffective(tookenId);
         if (msg.getErrcode() < 0) return msg;
 
@@ -151,6 +243,49 @@ public class ShipHandler {
             return msg;
         }
 
+        //判断房间是否可以购买
+        List<Room> roomList = ticketManager.getRoomList();
+        Room curRoom = null;
+        for (Room room : roomList) {
+            if (room.getShipId().equals(ticketId)) {
+                curRoom = room;
+                break;
+            }
+        }
+
+        if (curRoom == null) {
+            msg.setErrcode(-3);
+            msg.setData(null);
+            return msg;
+        }
+
+        List<Integer> reserveList = curRoom.getReserve();
+        for (Integer reserve : reserveList) {
+            if (reserve.equals(roomId)) {
+                msg.setErrcode(-4);
+                msg.setData(null);
+                return msg;
+            }
+        }
+
+        //检验玩家是否够贱 todo
+        //房间预定
+        reserveList.add(roomId);
+        List<Ticket> ticketlist = user.getTickets();
+        ticketlist.add(ticketInfo);
+
+        StringBuilder strBuild = new StringBuilder();
+        boolean flagdot = false;
+        for (Integer r1 : reserveList) {
+            if (flagdot) {
+                strBuild.append(",");
+            } else
+                flagdot = true;
+            strBuild.append(r1);
+        }
+        //更新已预定房间表
+        shipTick.updateRoomManage(ticketId, strBuild.toString());
+
         //判断是否够钱
         if (user.getCoin() < ticketInfo.getPrice()) {
             msg.setErrcode(-1);
@@ -159,7 +294,7 @@ public class ShipHandler {
             msg.setErrcode(0);
             msg.setData(null);
 
-            shipTick.buyTicket(user.getUserId(), ticketInfo.getId());
+            shipTick.buyTicket(user.getUserId(), ticketInfo.getId(), roomId);
         }
         return msg;
     }

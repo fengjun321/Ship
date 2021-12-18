@@ -8,5 +8,7 @@ import java.util.Map;
 public interface ShipTicket {
     public List<Map<String, Object>> findAll();
     public List<Map<String, Object>> getUserAllTicket(Integer userId);
-    public void buyTicket(Integer userId, Integer shipId);
+    public List<Map<String, Object>> getAllRoom(Integer shipId);
+    public void buyTicket(Integer userId, Integer shipId, Integer roomId);
+    public void updateRoomManage(Integer shipId, String reserve);
 }

@@ -3,6 +3,8 @@ package com.southwind.ship.entity;
 import lombok.Data;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -13,6 +15,7 @@ public class Ticket {
     private Integer discout;
     private String dateTime;
     private String desc;
+    private Integer roomId;
 
     //数据库ship表的数据直接映射到Ticket各个变量
     public void ShipTableValueToTicket(Map<String, Object> ticketInfo) {

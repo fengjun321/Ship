@@ -38,7 +38,7 @@ public class ManageOnlineThtread extends Thread {
                     //服务器用户下线
                     for (Map.Entry<String, UserA> entry: umap.entrySet()) {
                         UserA user = entry.getValue();
-                        if (System.currentTimeMillis() - user.getOnlineTick() > 500000) {
+                        if (System.currentTimeMillis() - user.getOnlineTick() > 500000000) {
                             System.out.println("服务器用户下线:"+ user.getName());
                             umap.remove(entry.getKey());
                         }

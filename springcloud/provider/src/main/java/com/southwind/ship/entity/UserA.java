@@ -20,4 +20,12 @@ public class UserA {
     public UserA() {
         tickets = new ArrayList<Ticket>();
     }
+    public Integer GetUserRoomByTicketId(Integer ticketId) {
+        for (Ticket ticket : tickets) {
+            if (ticket.getId().equals(ticketId)) {
+                return ticket.getRoomId();
+            }
+        }
+        return -1;
+    }
 }
