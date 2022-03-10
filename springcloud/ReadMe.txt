@@ -1,7 +1,7 @@
 本项目为了降低运行难度，大家只需要运行
 EureKaServer 和 provider
 
-实验条件（优先做maccc ）住反对法
+实验条件（优先做maccc ju）住反对法
 1.安装mysql，sql备份还原
 2.下载安装idea
 3.从git clone springcloud项目
